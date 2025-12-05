@@ -196,8 +196,11 @@ function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
-    if (product.variants) {
-        // Product has sizes
+    const VALID_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    const hasValidVariants = product.variants && Object.keys(product.variants).some(key => VALID_SIZES.includes(key));
+
+    if (hasValidVariants) {
+        // Product has valid sizes
         if (sizeInput && sizeInput.value) {
             selectedSize = sizeInput.value;
             variantId = product.variants[selectedSize];
@@ -302,17 +305,22 @@ function renderProductDetail() {
 
     // Size Selector HTML (Buttons instead of dropdown)
     let sizeSelectorHtml = '';
-    if (product.variants) {
+    const VALID_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+
+    // Check if product has any valid variants
+    const hasValidVariants = product.variants && Object.keys(product.variants).some(key => VALID_SIZES.includes(key));
+
+    if (hasValidVariants) {
         sizeSelectorHtml = `
             <div class="size-selector-container">
                 <span class="size-label">Select Size</span>
                 <div class="size-options">
                     ${Object.keys(product.variants)
-                        .sort((a, b) => {
-                            const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
-                            return sizeOrder.indexOf(a) - sizeOrder.indexOf(b);
-                        })
-                        .map(size => `
+                .filter(size => VALID_SIZES.includes(size)) // Only show valid sizes
+                .sort((a, b) => {
+                    return VALID_SIZES.indexOf(a) - VALID_SIZES.indexOf(b);
+                })
+                .map(size => `
                         <button class="size-btn" onclick="selectSize(this, '${size}')">${size}</button>
                     `).join('')}
                 </div>
