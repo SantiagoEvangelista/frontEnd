@@ -307,7 +307,12 @@ function renderProductDetail() {
             <div class="size-selector-container">
                 <span class="size-label">Select Size</span>
                 <div class="size-options">
-                    ${Object.keys(product.variants).map(size => `
+                    ${Object.keys(product.variants)
+                        .sort((a, b) => {
+                            const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+                            return sizeOrder.indexOf(a) - sizeOrder.indexOf(b);
+                        })
+                        .map(size => `
                         <button class="size-btn" onclick="selectSize(this, '${size}')">${size}</button>
                     `).join('')}
                 </div>
