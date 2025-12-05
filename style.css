@@ -1,0 +1,578 @@
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --secondary-text: #a0a0a0;
+    --font-main: 'Inter', sans-serif;
+    --font-heading: 'Playfair Display', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding-bottom: 200px;
+    /* Space for fixed footer */
+}
+
+/* Header */
+header {
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    background: transparent;
+}
+
+.logo-img {
+    width: 80px;
+    /* Adjust based on actual logo size */
+    height: auto;
+    /* filter: invert(1); Removed based on user feedback that it looked black */
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+    padding-top: 1rem;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+nav a:hover {
+    opacity: 1;
+}
+
+/* Custom Currency Selector */
+.currency-custom-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    color: #888;
+    z-index: 100;
+    /* Center alignment adjustments if needed, but flexbox in footer handles it */
+}
+
+.currency-label {
+    margin-right: 0.2rem;
+}
+
+.currency-current-display {
+    display: inline-block;
+    color: #fff;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.currency-custom-container:hover .currency-current-display {
+    opacity: 0.8;
+}
+
+.currency-custom-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    /* Open upwards */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 4px;
+    min-width: 60px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    margin-bottom: 0;
+    /* Removed gap to prevent closing on hover */
+}
+
+.currency-custom-container:hover .currency-custom-dropdown,
+.currency-custom-container.active .currency-custom-dropdown {
+    display: block;
+}
+
+.currency-custom-option {
+    padding: 0.6rem 1rem;
+    color: #888;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.currency-custom-option:hover {
+    color: #fff;
+    background: #222;
+}
+
+/* Hero */
+.hero {
+    height: 70vh;
+    /* Reduced from 85vh to bring products higher */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 120px;
+    /* Add some top padding to account for header */
+}
+
+.hero-content {
+    z-index: 2;
+    text-align: center;
+    margin-bottom: -30px;
+    /* Reduced overlap */
+}
+
+.hero h1 {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 400;
+    letter-spacing: -1px;
+    background: linear-gradient(to bottom, #fff, #ccc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-image-container {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.hero-img {
+    max-width: 80%;
+    max-height: 100%;
+    object-fit: contain;
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+/* Products */
+.products-section {
+    padding: 0 5% 4rem;
+    /* Removed top padding to bring products higher */
+    text-align: center;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    /* Reduced margin */
+    font-weight: 400;
+}
+
+.products-grid {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    cursor: pointer;
+}
+
+.product-image-container {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    position: relative;
+    background: #111;
+    /* Fallback */
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image-container {
+    transform: scale(1.02);
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.product-card:hover .product-image {
+    opacity: 1;
+}
+
+.product-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.3s;
+    margin-bottom: 0.5rem;
+}
+
+.product-card:hover .product-title {
+    text-decoration-color: var(--text-color);
+}
+
+.product-price {
+    color: var(--secondary-text);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    opacity: 1;
+    /* Always visible */
+    transform: none;
+    /* No movement */
+    transition: color 0.3s;
+}
+
+.product-card:hover .product-price {
+    color: var(--text-color);
+    /* Highlight on hover instead */
+}
+
+/* Gallery Navigation */
+.main-image-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    /* Ensure background is dark for white arrows if image has transparency */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.main-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 3rem;
+    /* Larger and thinner look */
+    padding: 0 1rem;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.3s, transform 0.2s;
+    font-family: var(--font-main);
+    /* Ensure consistent font rendering */
+    font-weight: 300;
+    outline: none;
+}
+
+.main-image-wrapper:hover .nav-arrow {
+    opacity: 0.6;
+    /* Visible on hover, slightly transparent */
+}
+
+.nav-arrow:hover {
+    opacity: 1 !important;
+    /* Fully visible when hovering the arrow itself */
+    background: transparent;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.left-arrow {
+    left: 0;
+}
+
+.right-arrow {
+    right: 0;
+}
+
+/* Product Detail New Layout */
+.product-detail-left {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.product-detail-right {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+}
+
+.pd-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.pd-price {
+    font-size: 1.5rem;
+    color: var(--secondary-text);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+}
+
+.pd-description {
+    margin-bottom: 3rem;
+    line-height: 1.8;
+    color: #ccc;
+    font-size: 1rem;
+    border-top: 1px solid #333;
+    padding-top: 2rem;
+}
+
+/* Size Selector */
+.size-selector-container {
+    margin-bottom: 2.5rem;
+}
+
+.size-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+.size-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.size-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* Circular buttons */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.size-btn:hover {
+    border-color: #fff;
+}
+
+.size-btn.active {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    font-weight: 600;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 1.2rem 3rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    width: 100%;
+    font-weight: 600;
+}
+
+.add-to-cart-btn:hover {
+    background: #ccc;
+    transform: translateY(-2px);
+}
+
+/* Thumbnails */
+.thumbnails-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.thumbnail-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.thumbnail-img:hover {
+    opacity: 1;
+    border-color: #666;
+}
+
+@media (max-width: 768px) {
+    .product-detail-right {
+        padding-left: 0;
+        margin-top: 2rem;
+    }
+
+    .pd-title {
+        font-size: 2.5rem;
+    }
+}
+
+.shop-all-container {
+    margin-top: 2rem;
+}
+
+.shop-all-btn {
+    display: inline-block;
+    padding: 1rem 3rem;
+    background-color: #e0e0e0;
+    color: #000;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.shop-all-btn:hover {
+    background-color: #fff;
+}
+
+/* Footer */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 2rem 3rem;
+    /* Reduced padding for fixed footer */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+    /* Opaque background */
+    z-index: 90;
+    border-top: 1px solid #222;
+    /* Optional separator */
+}
+
+.footer-left p {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    /* Slightly smaller */
+    margin-bottom: 1rem;
+}
+
+.footer-left .copyright {
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-bottom: 0;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.footer-right h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    /* Slightly smaller */
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+.footer-right a {
+    color: var(--text-color);
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .products-grid {
+        gap: 2rem;
+    }
+
+    footer {
+        position: relative;
+        /* On mobile, fixed footer might take too much space, or keep it fixed? Let's keep it fixed but maybe stack? */
+        /* Actually, for mobile, fixed footer often covers too much. Let's revert to static on mobile or keep it if user insists "same place".
+           "Simple Simple Simple". Let's keep it fixed but stack.
+        */
+        flex-direction: row;
+        /* Keep row if possible, or stack if needed. */
+        align-items: flex-end;
+        padding: 1.5rem;
+    }
+
+    /* If mobile needs stacking */
+    /*
+    footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    */
+}
