@@ -576,3 +576,187 @@ footer {
     }
     */
 }
+
+/* ========================================
+   Custom Notification Banner
+   ======================================== */
+.notification-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    padding-top: 1rem;
+}
+
+.notification-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    max-width: 90%;
+    pointer-events: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* Animation */
+    opacity: 0;
+    transform: translateY(-100%);
+    animation: notification-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.notification-banner.notification-exit {
+    animation: notification-slide-out 0.3s cubic-bezier(0.5, 0, 1, 0.5) forwards;
+}
+
+@keyframes notification-slide-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes notification-slide-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+/* Notification Types */
+.notification-banner.notification-success {
+    border-color: #2d4a3e;
+    background: linear-gradient(135deg, #1a2d25 0%, #0d1912 100%);
+}
+
+.notification-banner.notification-success .notification-icon {
+    color: #4ade80;
+}
+
+.notification-banner.notification-error {
+    border-color: #4a2d2d;
+    background: linear-gradient(135deg, #2d1a1a 0%, #190d0d 100%);
+}
+
+.notification-banner.notification-error .notification-icon {
+    color: #f87171;
+}
+
+.notification-banner.notification-warning {
+    border-color: #4a442d;
+    background: linear-gradient(135deg, #2d2a1a 0%, #191610 100%);
+}
+
+.notification-banner.notification-warning .notification-icon {
+    color: #fbbf24;
+}
+
+.notification-banner.notification-info {
+    border-color: #2d3a4a;
+    background: linear-gradient(135deg, #1a222d 0%, #0d1219 100%);
+}
+
+.notification-banner.notification-info .notification-icon {
+    color: #60a5fa;
+}
+
+/* Icon */
+.notification-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+/* Message */
+.notification-message {
+    flex: 1;
+    line-height: 1.4;
+}
+
+/* Close Button */
+.notification-close {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    opacity: 1;
+    color: #fff;
+}
+
+/* Progress Bar */
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
+    border-radius: 0 0 0 8px;
+    animation: notification-progress 3s linear forwards;
+}
+
+@keyframes notification-progress {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0%;
+    }
+}
+
+.notification-banner.notification-success .notification-progress {
+    background: linear-gradient(90deg, #4ade80 0%, rgba(74, 222, 128, 0.3) 100%);
+}
+
+.notification-banner.notification-error .notification-progress {
+    background: linear-gradient(90deg, #f87171 0%, rgba(248, 113, 113, 0.3) 100%);
+}
+
+.notification-banner.notification-warning .notification-progress {
+    background: linear-gradient(90deg, #fbbf24 0%, rgba(251, 191, 36, 0.3) 100%);
+}
+
+.notification-banner.notification-info .notification-progress {
+    background: linear-gradient(90deg, #60a5fa 0%, rgba(96, 165, 250, 0.3) 100%);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .notification-banner {
+        margin: 0 0.5rem;
+        font-size: 0.875rem;
+        padding: 0.875rem 1rem;
+    }
+}

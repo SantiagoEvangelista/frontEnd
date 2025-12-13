@@ -4,6 +4,96 @@ const IMAGE_BASE_URL = `${SUPABASE_PROJECT_URL}/storage/v1/object/public/images/
 
 const products = []; // Will be fetched from Supabase
 
+// ========================================
+// Custom Notification System
+// ========================================
+const notificationIcons = {
+    success: '✓',
+    error: '✕',
+    warning: '⚠',
+    info: 'ℹ'
+};
+
+function getOrCreateNotificationContainer() {
+    let container = document.querySelector('.notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'notification-container';
+        document.body.appendChild(container);
+    }
+    return container;
+}
+
+function showNotification(message, type = 'success', duration = 3000) {
+    const container = getOrCreateNotificationContainer();
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification-banner notification-${type}`;
+    notification.style.position = 'relative';
+    notification.style.marginBottom = '0.5rem';
+
+    // Icon
+    const icon = document.createElement('span');
+    icon.className = 'notification-icon';
+    icon.textContent = notificationIcons[type] || notificationIcons.info;
+
+    // Message
+    const messageEl = document.createElement('span');
+    messageEl.className = 'notification-message';
+    messageEl.textContent = message;
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'notification-close';
+    closeBtn.innerHTML = '×';
+    closeBtn.onclick = () => dismissNotification(notification);
+
+    // Progress bar
+    const progress = document.createElement('div');
+    progress.className = 'notification-progress';
+    progress.style.animationDuration = `${duration}ms`;
+
+    // Assemble
+    notification.appendChild(icon);
+    notification.appendChild(messageEl);
+    notification.appendChild(closeBtn);
+    notification.appendChild(progress);
+
+    // Add to container
+    container.appendChild(notification);
+
+    // Auto dismiss
+    const timeoutId = setTimeout(() => {
+        dismissNotification(notification);
+    }, duration);
+
+    // Store timeout ID for potential cancellation
+    notification.dataset.timeoutId = timeoutId;
+
+    return notification;
+}
+
+function dismissNotification(notification) {
+    // Clear any existing timeout
+    if (notification.dataset.timeoutId) {
+        clearTimeout(parseInt(notification.dataset.timeoutId));
+    }
+
+    // Add exit animation class
+    notification.classList.add('notification-exit');
+
+    // Remove after animation completes
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 300);
+}
+
+// Make showNotification globally available
+window.showNotification = showNotification;
+
 async function fetchProducts() {
     try {
         const response = await fetch(`${SUPABASE_PROJECT_URL}/rest/v1/products?select=*&order=id`, {
@@ -206,7 +296,7 @@ function addToCart(productId) {
             variantId = product.variants[selectedSize];
         } else {
             // No size selected
-            alert("Please select a size.");
+            showNotification("Please select a size.", "warning");
             return;
         }
     } else {
@@ -224,9 +314,9 @@ function addToCart(productId) {
         });
         localStorage.setItem('oblivCart', JSON.stringify(cart));
         updateCartCount();
-        alert(`${product.name} ${selectedSize !== "One Size" ? `(${selectedSize}) ` : ""}added to cart!`);
+        showNotification(`${product.name} ${selectedSize !== "One Size" ? `(${selectedSize}) ` : ""}added to cart!`, "success");
     } else {
-        alert("Please select a size.");
+        showNotification("Please select a size.", "warning");
     }
 }
 
@@ -458,13 +548,13 @@ async function initiateCheckout() {
             window.location.href = data.url;
         } else {
             console.error('Checkout Error:', data);
-            alert(`Error creating checkout session: ${data.error || JSON.stringify(data)}`);
+            showNotification(`Error creating checkout session: ${data.error || 'Please try again.'}`, "error", 5000);
             checkoutBtn.innerText = originalText;
             checkoutBtn.disabled = false;
         }
     } catch (error) {
         console.error('Network/Script Error:', error);
-        alert(`Something went wrong: ${error.message}`);
+        showNotification(`Something went wrong: ${error.message}`, "error", 5000);
         checkoutBtn.innerText = originalText;
         checkoutBtn.disabled = false;
     }
