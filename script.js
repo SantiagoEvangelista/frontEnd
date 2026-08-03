@@ -366,10 +366,16 @@ window.changeImage = changeImage;
 
 function renderProducts() {
     if (!productsContainer) return;
+    const gridImageByProductId = {
+        1: 'assets/products/hoodie-grid.webp',
+        2: 'assets/products/shorts-grid.webp',
+        3: 'assets/products/bag-grid.webp'
+    };
+
     productsContainer.innerHTML = products.map(product => `
         <div class="product-card" onclick="window.location.href='product.html?id=${product.id}'">
             <div class="product-image-container">
-                <img src="${product.images[0]}" alt="${product.name}" class="product-image">
+                <img src="${gridImageByProductId[product.id] || product.images[0]}" alt="${product.name}" class="product-image">
             </div>
             <h3 class="product-title">${product.name}</h3>
             <p class="product-price">${formatPrice(product.price_eur || product.price)}</p>
