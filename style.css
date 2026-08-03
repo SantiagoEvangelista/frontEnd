@@ -925,43 +925,6 @@ footer {
     line-height: 0.98;
 }
 
-.principles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 0;
-    border-right: 1px solid var(--line);
-}
-
-.principle-card {
-    min-height: 390px;
-    padding: 3rem;
-    background: var(--surface);
-    border-bottom: 1px solid var(--line);
-    border-left: 1px solid var(--line);
-}
-
-.principle-number {
-    display: block;
-    margin-bottom: 7rem;
-    color: #737373;
-    font-size: 0.72rem;
-    letter-spacing: 0.16em;
-}
-
-.principle-card h2 {
-    margin-bottom: 1rem;
-    font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 2.8vw, 2.8rem);
-    font-weight: 400;
-    line-height: 1.08;
-}
-
-.principle-card p {
-    color: var(--muted);
-    font-size: 0.95rem;
-    line-height: 1.7;
-}
-
 .home-page .products-section {
     padding: clamp(6rem, 10vw, 9rem) max(3rem, calc((100vw - 1180px) / 2));
     text-align: left;
@@ -1121,21 +1084,15 @@ footer {
         display: none;
     }
 
-    .principles,
     .about-values {
         grid-template-columns: 1fr;
         border-right: 0;
     }
 
-    .principle-card,
     .about-values article {
         min-height: auto;
         padding: 2.5rem;
         border-right: 1px solid var(--line);
-    }
-
-    .principle-number {
-        margin-bottom: 4rem;
     }
 
     .about-values h2 {
@@ -1196,7 +1153,6 @@ footer {
         margin-left: 0;
     }
 
-    .principle-card,
     .about-values article {
         padding: 2rem 1.5rem;
     }
