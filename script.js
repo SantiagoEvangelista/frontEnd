@@ -368,8 +368,8 @@ function renderProducts() {
     if (!productsContainer) return;
     const gridImageByProductId = {
         1: 'assets/products/hoodie-grid-v2.png',
-        2: 'assets/products/shorts-grid-v2.png',
-        3: 'assets/products/bag-grid-v2.png'
+        2: 'assets/products/shorts-grid-v3.png',
+        3: 'assets/products/bag-grid-v3.png'
     };
 
     productsContainer.innerHTML = products.map(product => `
