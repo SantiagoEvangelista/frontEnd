@@ -1061,23 +1061,30 @@ footer {
 
     .home-page .hero {
         grid-template-columns: 1fr;
+        grid-template-rows: minmax(100svh, auto);
     }
 
     .home-page .hero-content {
-        min-height: 62svh;
-        justify-content: flex-start;
-        padding: 8rem 1.5rem 3rem;
+        grid-area: 1 / 1;
+        min-height: 100svh;
+        justify-content: flex-end;
+        padding: 8rem 1.5rem 4rem;
     }
 
     .home-page .hero-image-container {
-        min-height: 38svh;
-        border-top: 1px solid var(--line);
+        grid-area: 1 / 1;
+        width: 100%;
+        height: 100svh;
+        min-height: 0;
+        border-top: 0;
         border-left: 0;
     }
 
     .home-page .hero-img {
-        mask-image: linear-gradient(to bottom, transparent 0%, black 24%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 24%);
+        object-position: center 18%;
+        opacity: 0.68;
+        mask-image: linear-gradient(to bottom, black 0%, black 48%, transparent 92%);
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 48%, transparent 92%);
     }
 
     .hero-note {
@@ -1133,12 +1140,14 @@ footer {
     }
 
     .home-page .hero-content {
-        min-height: 56svh;
-        padding: 6.75rem 1.25rem 2.5rem;
+        min-height: 100svh;
+        padding: 7rem 1.25rem 2.75rem;
     }
 
     .home-page .hero h1 {
-        font-size: clamp(3.2rem, 15.5vw, 5rem);
+        margin: 0.8rem 0 1rem;
+        font-size: clamp(2.5rem, 10.5vw, 4rem);
+        line-height: 0.92;
     }
 
     .hero-actions {
@@ -1146,7 +1155,10 @@ footer {
     }
 
     .hero-actions .button {
-        flex: 1 1 100%;
+        flex: 1 1 calc(50% - 0.4rem);
+        min-height: 48px;
+        padding-inline: 0.65rem;
+        font-size: 0.68rem;
     }
 
     .about-intro {
