@@ -339,10 +339,23 @@ const productDetailContainer = document.getElementById('product-detail-container
 // Gallery State
 let currentProduct = null;
 let currentImageIndex = 0;
+let currentDetailImages = [];
+
+const storefrontImagesByProductId = {
+    1: ['assets/products/hoodie-grid-v3.png'],
+    2: ['assets/products/shorts-grid-v3.png'],
+    3: ['assets/products/bag-grid-v3.png', 'assets/products/bag-features-v1.png']
+};
+
+const storefrontDescriptionsByProductId = {
+    1: 'A relaxed black training layer with a roomy hood and clean front finish. Easy over a session, considered enough for everything after.',
+    2: 'Black training shorts with a relaxed athletic cut, a secure elastic waist and room to move without distraction.',
+    3: 'A structured barrel bag for training essentials, with padded handles, an adjustable shoulder strap and dedicated internal and side storage.'
+};
 
 function changeImage(direction) {
     console.log('changeImage called', direction);
-    if (!currentProduct || !currentProduct.images || currentProduct.images.length <= 1) {
+    if (!currentProduct || currentDetailImages.length <= 1) {
         console.log('No multiple images to cycle');
         return;
     }
@@ -351,14 +364,14 @@ function changeImage(direction) {
 
     // Wrap around
     if (currentImageIndex < 0) {
-        currentImageIndex = currentProduct.images.length - 1;
-    } else if (currentImageIndex >= currentProduct.images.length) {
+        currentImageIndex = currentDetailImages.length - 1;
+    } else if (currentImageIndex >= currentDetailImages.length) {
         currentImageIndex = 0;
     }
 
     const mainImage = document.getElementById('main-product-image');
     if (mainImage) {
-        mainImage.src = currentProduct.images[currentImageIndex];
+        mainImage.src = currentDetailImages[currentImageIndex];
     }
 }
 // Ensure global access
@@ -366,16 +379,11 @@ window.changeImage = changeImage;
 
 function renderProducts() {
     if (!productsContainer) return;
-    const gridImageByProductId = {
-        1: 'assets/products/hoodie-grid-v3.png',
-        2: 'assets/products/shorts-grid-v3.png',
-        3: 'assets/products/bag-grid-v3.png'
-    };
 
     productsContainer.innerHTML = products.map(product => `
         <div class="product-card" onclick="window.location.href='product.html?id=${product.id}'">
             <div class="product-image-container">
-                <img src="${gridImageByProductId[product.id] || product.images[0]}" alt="${product.name}" class="product-image">
+                <img src="${storefrontImagesByProductId[product.id]?.[0] || product.images[0]}" alt="${product.name}" class="product-image">
             </div>
             <h3 class="product-title">${product.name}</h3>
             <p class="product-price">${formatPrice(product.price_eur || product.price)}</p>
@@ -398,6 +406,7 @@ function renderProductDetail() {
     // Set global state
     currentProduct = product;
     currentImageIndex = 0;
+    currentDetailImages = storefrontImagesByProductId[product.id] || product.images || [product.image];
 
     // Size Selector HTML (Buttons instead of dropdown)
     let sizeSelectorHtml = '';
@@ -427,7 +436,7 @@ function renderProductDetail() {
 
     // Image Gallery HTML
     let arrowsHtml = '';
-    if (product.images && product.images.length > 1) {
+    if (currentDetailImages.length > 1) {
         arrowsHtml = `
             <button class="nav-arrow left-arrow" onclick="changeImage(-1)">&lt;</button>
             <button class="nav-arrow right-arrow" onclick="changeImage(1)">&gt;</button>
@@ -437,14 +446,14 @@ function renderProductDetail() {
     const mainImageHtml = `
         <div class="main-image-wrapper">
             ${arrowsHtml}
-            <img id="main-product-image" src="${product.images ? product.images[0] : product.image}" alt="${product.name}">
+            <img id="main-product-image" src="${currentDetailImages[0]}" alt="${product.name}">
         </div>
     `;
 
     let thumbnailsHtml = '';
-    if (product.images && product.images.length > 1) {
+    if (currentDetailImages.length > 1) {
         thumbnailsHtml = `<div class="thumbnails-container">
-            ${product.images.map((img, index) => `
+            ${currentDetailImages.map((img, index) => `
                 <img src="${img}" 
                      onclick="currentImageIndex = ${index}; document.getElementById('main-product-image').src = '${img}'" 
                      class="thumbnail-img"
@@ -465,7 +474,7 @@ function renderProductDetail() {
             ${sizeSelectorHtml}
 
             <div class="pd-description">
-                ${product.description}
+                ${storefrontDescriptionsByProductId[product.id] || product.description}
             </div>
             <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
         </div>
