@@ -342,15 +342,25 @@ let currentImageIndex = 0;
 let currentDetailImages = [];
 
 const storefrontImagesByProductId = {
-    1: ['assets/products/hoodie-grid-v3.png'],
-    2: ['assets/products/shorts-grid-v3.png'],
-    3: ['assets/products/bag-grid-v3.png', 'assets/products/bag-features-v1.png']
-};
-
-const storefrontDescriptionsByProductId = {
-    1: 'A relaxed black training layer with a roomy hood and clean front finish. Easy over a session, considered enough for everything after.',
-    2: 'Black training shorts with a relaxed athletic cut, a secure elastic waist and room to move without distraction.',
-    3: 'A structured barrel bag for training essentials, with padded handles, an adjustable shoulder strap and dedicated internal and side storage.'
+    1: [
+        'assets/products/hoodie-grid-v3.png',
+        'assets/products/hoodie-grid-v2.png',
+        'assets/products/hoodie-model-front.png',
+        'assets/products/hoodie-model-angle.png'
+    ],
+    2: [
+        'assets/products/shorts-grid-v3.png',
+        'assets/products/shorts-gym.png',
+        'assets/products/shorts-grid-v2.png',
+        'assets/products/shorts-model-front.png',
+        'assets/products/shorts-model-back.png'
+    ],
+    3: [
+        'assets/products/bag-grid-v3.png',
+        'assets/products/bag-grid-v2.png',
+        'assets/products/bag-grid.webp',
+        'assets/products/bag-features-v1.png'
+    ]
 };
 
 function changeImage(direction) {
@@ -377,17 +387,26 @@ function changeImage(direction) {
 // Ensure global access
 window.changeImage = changeImage;
 
+function selectProductImage(index) {
+    const mainImage = document.getElementById('main-product-image');
+    if (!mainImage || !currentDetailImages[index]) return;
+
+    currentImageIndex = index;
+    mainImage.src = currentDetailImages[index];
+}
+window.selectProductImage = selectProductImage;
+
 function renderProducts() {
     if (!productsContainer) return;
 
     productsContainer.innerHTML = products.map(product => `
-        <div class="product-card" onclick="window.location.href='product.html?id=${product.id}'">
+        <a class="product-card" href="product.html?id=${product.id}" aria-label="View ${product.name}">
             <div class="product-image-container">
-                <img src="${storefrontImagesByProductId[product.id]?.[0] || product.images[0]}" alt="${product.name}" class="product-image">
+                <img src="${storefrontImagesByProductId[product.id]?.[0] || product.images[0]}" alt="${product.name}" class="product-image" loading="lazy">
             </div>
             <h3 class="product-title">${product.name}</h3>
             <p class="product-price">${formatPrice(product.price_eur || product.price)}</p>
-        </div>
+        </a>
     `).join('');
 }
 
@@ -419,14 +438,14 @@ function renderProductDetail() {
         sizeSelectorHtml = `
             <div class="size-selector-container">
                 <span class="size-label">Select Size</span>
-                <div class="size-options">
+                <div class="size-options" role="group" aria-label="Select size">
                     ${Object.keys(product.variants)
                 .filter(size => VALID_SIZES.includes(size)) // Only show valid sizes
                 .sort((a, b) => {
                     return VALID_SIZES.indexOf(a) - VALID_SIZES.indexOf(b);
                 })
                 .map(size => `
-                        <button class="size-btn" onclick="selectSize(this, '${size}')">${size}</button>
+                        <button type="button" class="size-btn" aria-pressed="false" onclick="selectSize(this, '${size}')">${size}</button>
                     `).join('')}
                 </div>
                 <input type="hidden" id="selected-size-input" value="">
@@ -438,8 +457,8 @@ function renderProductDetail() {
     let arrowsHtml = '';
     if (currentDetailImages.length > 1) {
         arrowsHtml = `
-            <button class="nav-arrow left-arrow" onclick="changeImage(-1)">&lt;</button>
-            <button class="nav-arrow right-arrow" onclick="changeImage(1)">&gt;</button>
+            <button type="button" class="nav-arrow left-arrow" onclick="changeImage(-1)" aria-label="Previous product image">&lt;</button>
+            <button type="button" class="nav-arrow right-arrow" onclick="changeImage(1)" aria-label="Next product image">&gt;</button>
         `;
     }
 
@@ -454,10 +473,9 @@ function renderProductDetail() {
     if (currentDetailImages.length > 1) {
         thumbnailsHtml = `<div class="thumbnails-container">
             ${currentDetailImages.map((img, index) => `
-                <img src="${img}" 
-                     onclick="currentImageIndex = ${index}; document.getElementById('main-product-image').src = '${img}'" 
-                     class="thumbnail-img"
-                >
+                <button type="button" class="thumbnail-button" onclick="selectProductImage(${index})" aria-label="Show ${product.name} image ${index + 1}">
+                    <img src="${img}" alt="${product.name} view ${index + 1}" class="thumbnail-img" loading="lazy">
+                </button>
             `).join('')}
         </div>`;
     }
@@ -468,15 +486,17 @@ function renderProductDetail() {
             ${thumbnailsHtml}
         </div>
         <div class="product-detail-right">
+            <p class="eyebrow pd-eyebrow">OBLIV UNIFORM</p>
             <h1 class="pd-title">${product.name}</h1>
             <p class="pd-price">${formatPrice(product.price_eur || product.price)}</p>
             
             ${sizeSelectorHtml}
 
             <div class="pd-description">
-                ${storefrontDescriptionsByProductId[product.id] || product.description}
+                ${product.description}
             </div>
-            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            <button type="button" class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            <p class="product-reassurance">Relaxed fit <span aria-hidden="true">·</span> Everyday wear <span aria-hidden="true">·</span> Built for movement</p>
         </div>
     `;
 }
@@ -484,9 +504,13 @@ function renderProductDetail() {
 // Helper for size selection
 function selectSize(btn, size) {
     // Remove active class from all buttons
-    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.size-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+    });
     // Add active class to clicked button
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     // Set hidden input value
     const input = document.getElementById('selected-size-input');
     if (input) input.value = size;
@@ -513,7 +537,7 @@ function renderCart() {
         return `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #333;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: contain; background: #080808;">
                     <div>
                         <h4 style="font-size: 1.1rem;">${item.name} <span style="font-size: 0.8rem; color: #888;">(${item.selectedSize})</span></h4>
                         <p style="color: #888;">${formatPrice(item.price_eur || item.price)}</p>

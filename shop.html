@@ -5,36 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Shop the full collection of Obliv Clothing. Browse our premium, minimalist designs crafted for elegance and performance.">
-    <title>Shop - Obliv Clothing</title>
+        content="Shop relaxed black essentials designed for movement, training and everything around it.">
+    <title>Shop OBLIV | The Uniform</title>
     <link rel="icon" href="https://vepymzxjgyzgbldqgcnf.supabase.co/storage/v1/object/public/images/Obliv-logo.png"
         type="image/png">
-    <link rel="stylesheet" href="style.css?v=home-mobile-3">
+    <link rel="stylesheet" href="style.css?v=day-uniform-1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;display=swap"
         rel="stylesheet">
     <link rel="canonical" href="https://oblivclothing.com/shop.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oblivclothing.com/shop.html">
+    <meta property="og:site_name" content="OBLIV Clothing">
+    <meta property="og:title" content="Shop OBLIV | The Uniform">
+    <meta property="og:description" content="Relaxed black essentials for movement, training and everything around it.">
+    <meta property="og:image" content="https://oblivclothing.com/assets/obliv-hero-v2.webp">
+    <meta property="og:image:alt" content="OBLIV relaxed black essentials">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shop OBLIV | The Uniform">
+    <meta name="twitter:description" content="Relaxed black essentials for movement, training and everything around it.">
+    <meta name="twitter:image" content="https://oblivclothing.com/assets/obliv-hero-v2.webp">
+    <meta name="twitter:image:alt" content="OBLIV relaxed black essentials">
 </head>
 
-<body>
+<body class="shop-page">
     <header>
         <div class="logo-container">
-            <a href="index.html">
+            <a href="index.html" aria-label="OBLIV home">
                 <img src="https://vepymzxjgyzgbldqgcnf.supabase.co/storage/v1/object/public/images/Obliv-logo.png"
                     alt="OBLIV" class="logo-img">
             </a>
         </div>
-        <nav>
-            <a href="shop.html" class="active">Shop</a>
-            <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+        <nav aria-label="Primary navigation">
+            <a href="shop.html" class="active" aria-current="page">SHOP</a>
+            <a href="cart.html" class="cart-link">CART (<span id="cart-count">0</span>)</a>
         </nav>
     </header>
 
     <main>
-        <section class="products-section" style="padding-top: 150px;">
-            <h1 class="section-title">All Products</h1>
+        <section class="shop-collection products-section" aria-labelledby="shop-title">
+            <div class="shop-heading">
+                <p class="eyebrow">THE UNIFORM</p>
+                <h1 class="section-title" id="shop-title">BUILT TO MOVE<br>THROUGH THE DAY.</h1>
+                <p>Relaxed black essentials for movement, training and everything around it.</p>
+            </div>
             <div class="products-grid" id="products-container">
                 <!-- Products will be injected here by JS -->
             </div>
@@ -43,15 +61,18 @@
 
     <footer>
         <div class="footer-left">
-            <p>Strength in Silence.</p>
-            <p class="copyright">&copy; 2025 Obliv Clothing</p>
+            <p>STRENGTH IN SILENCE.</p>
+            <p class="copyright">&copy; 2026 OBLIV Clothing</p>
         </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="shop.html">SHOP</a>
+        </nav>
         <div class="footer-right">
-            <h3>Contact</h3>
+            <h3>CONTACT</h3>
             <a href="mailto:contact@oblivclothing.com">contact@oblivclothing.com</a>
         </div>
     </footer>
-    <script src="script.js?v=product-detail-1"></script>
+    <script src="script.js?v=day-uniform-1"></script>
 </body>
 
 </html>
