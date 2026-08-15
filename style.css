@@ -1278,12 +1278,28 @@ header nav a {
 .home-page .hero-content {
     min-width: 0;
     padding-right: 2rem;
-    padding-left: clamp(3rem, 8.5vw, 11rem);
+    padding-left: 4rem;
 }
 
 .home-page .hero h1 {
+    width: 134%;
     max-width: none;
-    font-size: clamp(3.4rem, 7.4vw, 8.25rem);
+    font-size: clamp(3.4rem, 5.8vw, 7rem);
+    transform: scaleX(0.75);
+    transform-origin: left center;
+}
+
+.hero-title-line {
+    display: block;
+    white-space: nowrap;
+}
+
+@media (min-width: 1600px) {
+    .home-page .hero h1 {
+        width: 143%;
+        font-size: clamp(7rem, 7.4vw, 8.25rem);
+        transform: scaleX(0.7);
+    }
 }
 
 /* Product collection */
@@ -1563,10 +1579,11 @@ footer,
     }
 
     .home-page .hero h1 {
+        width: 100%;
         max-width: 100%;
         font-size: clamp(1.95rem, 8vw, 2.6rem);
         line-height: 0.92;
-        white-space: nowrap;
+        transform: none;
     }
 
     .home-page .hero-image-container {
